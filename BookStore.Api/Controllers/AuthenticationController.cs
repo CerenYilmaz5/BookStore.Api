@@ -4,43 +4,39 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BookStore.Api.Controllers
 {
-    // This controller handles authentication and token generation
+    // Handles user login and JWT token issuance
     [Route("api/[controller]")]
     [ApiController]
-    public class AuthController : ControllerBase
+    public class AuthenticationController : ControllerBase
     {
         private readonly IJwtService _jwtService;
 
-        // Inject the JWT service via constructor
-        public AuthController(IJwtService jwtService)
+        public AuthenticationController(IJwtService jwtService)
         {
             _jwtService = jwtService;
         }
 
-        // POST: api/auth/login
-        // Accepts a login request and returns a JWT token with additional user info
+        // POST: api/authentication/login
+        // Authenticates a user and returns a JWT token
         [HttpPost("login")]
         public IActionResult Login([FromBody] UserLoginRequest request)
         {
-            // Basic validation: both username and password must be provided
             if (string.IsNullOrWhiteSpace(request.Username) || string.IsNullOrWhiteSpace(request.Password))
             {
                 return BadRequest(new { status = 400, message = "Username and password are required." });
             }
 
-            // Determine role based on username (demo logic)
+            // Demo logic for role assignment
             string role = request.Username.ToLower() == "fake" ? "Fake" : "Normal";
 
-            // Generate a JWT token for the user
             string token = _jwtService.GenerateToken(request.Username, role);
 
-            // Return token response with user info
             var response = new TokenResponse
             {
                 Token = token,
                 Username = request.Username,
                 Role = role,
-                ExpiresIn = 60 // This should match JwtSettings.ExpirationInMinutes
+                ExpiresIn = 60
             };
 
             return Ok(response);

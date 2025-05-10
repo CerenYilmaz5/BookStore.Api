@@ -11,7 +11,7 @@ using System.Text;
 
 namespace BookStore.Api
 {
-    // This class handles the configuration of services and middleware.
+    // Configures services and the middleware pipeline
     public class Startup
     {
         private readonly IConfiguration _configuration;
@@ -21,7 +21,7 @@ namespace BookStore.Api
             _configuration = configuration;
         }
 
-        // Registers services and dependencies for DI
+        // Registers application services and dependencies
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
@@ -32,11 +32,11 @@ namespace BookStore.Api
             services.AddFluentValidationAutoValidation();
             services.AddValidatorsFromAssemblyContaining<UpdateBookRequestValidator>();
 
-            // Bind JWT settings from configuration
+            // JWT settings binding
             services.Configure<JwtSettings>(_configuration.GetSection("JwtSettings"));
             var jwtSettings = _configuration.GetSection("JwtSettings").Get<JwtSettings>();
 
-            // JWT Authentication
+            // JWT Authentication configuration
             services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -50,18 +50,19 @@ namespace BookStore.Api
                     ValidateAudience = true,
                     ValidateLifetime = true,
                     ValidateIssuerSigningKey = true,
-                    ValidIssuer = jwtSettings?.Issuer,
-                    ValidAudience = jwtSettings?.Audience,
+                    ValidIssuer = jwtSettings.Issuer,
+                    ValidAudience = jwtSettings.Audience,
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.SecretKey))
                 };
             });
 
-            // Register application services
+            // Dependency Injection
             services.AddSingleton<IBookService, FakeBookService>();
+            services.AddSingleton<IAuthorService, FakeAuthorService>();
             services.AddSingleton<IJwtService, JwtService>();
         }
 
-        // Configures the middleware pipeline
+        // Configures the request pipeline
         public void Configure(WebApplication app, IWebHostEnvironment env)
         {
             app.UseSwagger();
@@ -69,7 +70,7 @@ namespace BookStore.Api
 
             app.UseHttpsRedirection();
 
-            // Middleware order matters!
+            // Custom middlewares
             app.UseMiddleware<RequestLoggingMiddleware>();
             app.UseMiddleware<ExceptionHandlingMiddleware>();
 

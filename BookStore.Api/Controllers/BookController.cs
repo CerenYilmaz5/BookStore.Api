@@ -4,21 +4,20 @@ using BookStore.Api.Services.Interfaces;
 using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Linq;
 
 namespace BookStore.Api.Controllers
 {
-    // This controller handles all HTTP requests related to books.
-    // It is protected by JWT authentication and uses DTOs and validation for clean API behavior.
+    // Handles all HTTP requests related to book operations
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize] // Require JWT token for all actions
+    [Authorize] // JWT authentication required
     public class BookController : ControllerBase
     {
         private readonly IBookService _service;
         private readonly IValidator<UpdateBookRequest> _updateValidator;
         private readonly IValidator<GetByIdRequest> _idValidator;
 
-        // Constructor with dependency injection of services and validators
         public BookController(
             IBookService service,
             IValidator<UpdateBookRequest> updateValidator,
@@ -30,7 +29,7 @@ namespace BookStore.Api.Controllers
         }
 
         // GET: api/book
-        // Returns all books in the system
+        // Returns all books
         [HttpGet]
         public IActionResult GetAll()
         {
@@ -38,8 +37,8 @@ namespace BookStore.Api.Controllers
             return Ok(books);
         }
 
-        // GET: api/book/5
-        // Returns the book with the given ID
+        // GET: api/book/{id}
+        // Returns a book by ID
         [HttpGet("{id}")]
         public IActionResult GetById(int id)
         {
@@ -48,14 +47,13 @@ namespace BookStore.Api.Controllers
                 return BadRequest(new { status = 400, errors = validation.Errors });
 
             var book = _service.GetById(id);
-            if (book == null)
-                return NotFound(new { status = 404, message = "Book not found" });
-
-            return Ok(book.ToResponse());
+            return book == null
+                ? NotFound(new { status = 404, message = "Book not found" })
+                : Ok(book.ToResponse());
         }
 
         // POST: api/book
-        // Creates a new book. Only accessible by users with role "Fake"
+        // Creates a new book (Fake users only)
         [HttpPost]
         [Authorize(Roles = "Fake")]
         public IActionResult Create([FromBody] UpdateBookRequest request)
@@ -70,8 +68,8 @@ namespace BookStore.Api.Controllers
             return CreatedAtAction(nameof(GetById), new { id = created.Id }, created.ToResponse());
         }
 
-        // PUT: api/book/5
-        // Fully updates the book with the given ID
+        // PUT: api/book/{id}
+        // Updates a book completely
         [HttpPut("{id}")]
         public IActionResult Update(int id, [FromBody] UpdateBookRequest request)
         {
@@ -83,16 +81,15 @@ namespace BookStore.Api.Controllers
             if (!validation.IsValid)
                 return BadRequest(new { status = 400, errors = validation.Errors });
 
-            var book = request.ToEntity();
-            var updated = _service.Update(id, book);
+            var updated = _service.Update(id, request.ToEntity());
 
             return updated == null
                 ? NotFound(new { status = 404, message = "Book not found" })
                 : Ok(updated.ToResponse());
         }
 
-        // PATCH: api/book/5
-        // Partially updates the book with the given ID
+        // PATCH: api/book/{id}
+        // Partially updates a book
         [HttpPatch("{id}")]
         public IActionResult Patch(int id, [FromBody] UpdateBookRequest request)
         {
@@ -100,16 +97,15 @@ namespace BookStore.Api.Controllers
             if (!idValidation.IsValid)
                 return BadRequest(new { status = 400, errors = idValidation.Errors });
 
-            var book = request.ToEntity();
-            var patched = _service.Patch(id, book);
+            var patched = _service.Patch(id, request.ToEntity());
 
             return patched == null
                 ? NotFound(new { status = 404, message = "Book not found" })
                 : Ok(patched.ToResponse());
         }
 
-        // DELETE: api/book/5
-        // Deletes the book with the given ID
+        // DELETE: api/book/{id}
+        // Deletes a book
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
@@ -124,7 +120,7 @@ namespace BookStore.Api.Controllers
         }
 
         // GET: api/book/list?title=abc&sort=price
-        // Filters books by title and sorts the result
+        // Returns filtered/sorted books
         [HttpGet("list")]
         public IActionResult GetFiltered([FromQuery] string? title, [FromQuery] string? sort)
         {

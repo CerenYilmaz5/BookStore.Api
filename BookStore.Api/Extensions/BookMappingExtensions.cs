@@ -3,10 +3,10 @@ using BookStore.Api.Models;
 
 namespace BookStore.Api.Extensions
 {
-    // Static extension class that handles conversion between entity models and DTOs for Book operations.
-    public static class MappingExtensions
+    // Provides mapping functionality between Book entities and DTOs
+    public static class BookMappingExtensions
     {
-        // Converts an UpdateBookRequest DTO into a Book entity.
+        // Converts UpdateBookRequest DTO to Book entity
         public static Book ToEntity(this UpdateBookRequest request)
         {
             return new Book
@@ -20,7 +20,7 @@ namespace BookStore.Api.Extensions
             };
         }
 
-        // Converts a Book entity into a BookResponse DTO.
+        // Converts Book entity to BookResponse DTO
         public static BookResponse ToResponse(this Book book)
         {
             return new BookResponse
