@@ -1,6 +1,6 @@
 ﻿namespace BookStore.Api.Middlewares
 {
-    // This middleware logs incoming requests to the console
+    // This middleware logs basic details of incoming HTTP requests to the console.
     public class RequestLoggingMiddleware
     {
         private readonly RequestDelegate _next;
@@ -12,10 +12,10 @@
 
         public async Task Invoke(HttpContext context)
         {
-            // Log basic request details
+            // Log the HTTP method and request path
             Console.WriteLine($"[LOG] {context.Request.Method} {context.Request.Path}");
 
-            // Continue pipeline
+            // Pass the request to the next component in the pipeline
             await _next(context);
         }
     }

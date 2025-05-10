@@ -38,3 +38,11 @@ C:\Users\ceren\RiderProjects\BookStore.Api\BookStore.Api\obj\Debug\net8.0\BookSt
 C:\Users\ceren\RiderProjects\BookStore.Api\BookStore.Api\obj\Debug\net8.0\BookStore.Api.genruntimeconfig.cache
 C:\Users\ceren\RiderProjects\BookStore.Api\BookStore.Api\obj\Debug\net8.0\ref\BookStore.Api.dll
 C:\Users\ceren\RiderProjects\BookStore.Api\BookStore.Api\obj\Debug\net8.0\BookStore.Api.sourcelink.json
+C:\Users\ceren\RiderProjects\BookStore.Api\BookStore.Api\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Users\ceren\RiderProjects\BookStore.Api\BookStore.Api\bin\Debug\net8.0\Microsoft.IdentityModel.Abstractions.dll
+C:\Users\ceren\RiderProjects\BookStore.Api\BookStore.Api\bin\Debug\net8.0\Microsoft.IdentityModel.JsonWebTokens.dll
+C:\Users\ceren\RiderProjects\BookStore.Api\BookStore.Api\bin\Debug\net8.0\Microsoft.IdentityModel.Logging.dll
+C:\Users\ceren\RiderProjects\BookStore.Api\BookStore.Api\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.dll
+C:\Users\ceren\RiderProjects\BookStore.Api\BookStore.Api\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+C:\Users\ceren\RiderProjects\BookStore.Api\BookStore.Api\bin\Debug\net8.0\Microsoft.IdentityModel.Tokens.dll
+C:\Users\ceren\RiderProjects\BookStore.Api\BookStore.Api\bin\Debug\net8.0\System.IdentityModel.Tokens.Jwt.dll

@@ -3,18 +3,37 @@ using BookStore.Api.Services.Interfaces;
 
 namespace BookStore.Api.Services.Implementations
 {
-    // This is a fake book service that stores book data in memory (not a real database).
-    // It's mainly used for learning, testing, or simulating how real services work.
+    // A fake in-memory implementation of IBookService.
+    // This is used for demo, testing or development purposes.
     public class FakeBookService : IBookService
     {
         private readonly List<Book> _books;
 
         public FakeBookService()
         {
+            // Initialize with some default books.
             _books = new List<Book>
             {
-                new Book { Id = 1, Title = "1984", Author = "George Orwell", Price = 45, Stock = 10, PageCount = 328, PublishedDate = new DateTime(1949, 6, 8) },
-                new Book { Id = 2, Title = "Brave New World", Author = "Aldous Huxley", Price = 50, Stock = 5, PageCount = 311, PublishedDate = new DateTime(1932, 1, 1) }
+                new Book
+                {
+                    Id = 1,
+                    Title = "1984",
+                    Author = "George Orwell",
+                    Price = 45,
+                    Stock = 10,
+                    PageCount = 328,
+                    PublishedDate = new DateTime(1949, 6, 8)
+                },
+                new Book
+                {
+                    Id = 2,
+                    Title = "Brave New World",
+                    Author = "Aldous Huxley",
+                    Price = 50,
+                    Stock = 5,
+                    PageCount = 311,
+                    PublishedDate = new DateTime(1932, 1, 1)
+                }
             };
         }
 

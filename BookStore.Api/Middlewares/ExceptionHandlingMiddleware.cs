@@ -3,7 +3,8 @@ using System.Text.Json;
 
 namespace BookStore.Api.Middlewares
 {
-    // This middleware catches unhandled exceptions globally
+    // This middleware catches any unhandled exceptions in the pipeline
+    // and returns a standardized error response.
     public class ExceptionHandlingMiddleware
     {
         private readonly RequestDelegate _next;
@@ -17,12 +18,12 @@ namespace BookStore.Api.Middlewares
         {
             try
             {
-                // Continue pipeline
+                // Proceed to next middleware/component
                 await _next(context);
             }
             catch (Exception ex)
             {
-                // If an exception occurs, return standardized error response
+                // If any exception is thrown, handle it here
                 context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
                 context.Response.ContentType = "application/json";
 
