@@ -37,3 +37,4 @@ C:\Users\ceren\RiderProjects\BookStore.Api\BookStore.Api\obj\Debug\net8.0\refint
 C:\Users\ceren\RiderProjects\BookStore.Api\BookStore.Api\obj\Debug\net8.0\BookStore.Api.pdb
 C:\Users\ceren\RiderProjects\BookStore.Api\BookStore.Api\obj\Debug\net8.0\BookStore.Api.genruntimeconfig.cache
 C:\Users\ceren\RiderProjects\BookStore.Api\BookStore.Api\obj\Debug\net8.0\ref\BookStore.Api.dll
+C:\Users\ceren\RiderProjects\BookStore.Api\BookStore.Api\obj\Debug\net8.0\BookStore.Api.sourcelink.json

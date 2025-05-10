@@ -1,23 +1,12 @@
-using BookStore.Api.Validators;
-using FluentValidation;
-using FluentValidation.AspNetCore;
+using BookStore.Api;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddControllers();
-builder.Services.AddFluentValidationAutoValidation();
-builder.Services.AddValidatorsFromAssemblyContaining<BookValidator>();
-
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+// Create and configure Startup
+var startup = new Startup(builder.Configuration);
+startup.ConfigureServices(builder.Services);
 
 var app = builder.Build();
-
-app.UseSwagger();
-app.UseSwaggerUI();
-
-app.UseHttpsRedirection();
-app.UseAuthorization();
-app.MapControllers();
+startup.Configure(app, builder.Environment);
 
 app.Run();
