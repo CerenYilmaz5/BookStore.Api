@@ -13,6 +13,7 @@ namespace BookStore.Api.Extensions
             {
                 Title = request.Title,
                 Author = request.Author,
+                Genre = request.Genre,
                 Price = request.Price,
                 Stock = request.Stock,
                 PageCount = request.PageCount,
@@ -28,6 +29,7 @@ namespace BookStore.Api.Extensions
                 Id = book.Id,
                 Title = book.Title,
                 Author = book.Author,
+                Genre = book.Genre,
                 Price = book.Price,
                 Stock = book.Stock,
                 PageCount = book.PageCount,

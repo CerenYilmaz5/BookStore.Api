@@ -25,6 +25,7 @@ namespace BookStore.Api.Services.Interfaces
         bool Delete(int id);
 
         // Filters and optionally sorts the list of books.
-        IEnumerable<Book> Filter(string? title, string? sort);
+        IEnumerable<Book> Filter(string? title, string? sort, string? genre = null);
+
     }
 }

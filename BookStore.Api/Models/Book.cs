@@ -12,6 +12,9 @@
         // Author of the book.
         public string Author { get; set; } = "";
 
+        // Genre of the book.
+        public string Genre { get; set; } = "";
+
         // Price of the book.
         public decimal Price { get; set; }
 

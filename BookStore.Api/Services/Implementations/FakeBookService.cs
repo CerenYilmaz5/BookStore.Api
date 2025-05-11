@@ -19,6 +19,7 @@ namespace BookStore.Api.Services.Implementations
                     Id = 1,
                     Title = "1984",
                     Author = "George Orwell",
+                    Genre = "Dystopian",
                     Price = 45,
                     Stock = 10,
                     PageCount = 328,
@@ -29,6 +30,7 @@ namespace BookStore.Api.Services.Implementations
                     Id = 2,
                     Title = "Brave New World",
                     Author = "Aldous Huxley",
+                    Genre = "Science Fiction",
                     Price = 50,
                     Stock = 5,
                     PageCount = 311,
@@ -55,6 +57,7 @@ namespace BookStore.Api.Services.Implementations
 
             existing.Title = book.Title;
             existing.Author = book.Author;
+            existing.Genre = book.Genre;
             existing.Price = book.Price;
             existing.Stock = book.Stock;
             existing.PageCount = book.PageCount;
@@ -70,6 +73,7 @@ namespace BookStore.Api.Services.Implementations
 
             if (!string.IsNullOrEmpty(book.Title)) existing.Title = book.Title;
             if (!string.IsNullOrEmpty(book.Author)) existing.Author = book.Author;
+            if (!string.IsNullOrEmpty(book.Genre)) existing.Genre = book.Genre;
             if (book.Price > 0) existing.Price = book.Price;
             if (book.Stock >= 0) existing.Stock = book.Stock;
             if (book.PageCount > 0) existing.PageCount = book.PageCount;
@@ -86,10 +90,13 @@ namespace BookStore.Api.Services.Implementations
             return true;
         }
 
-        public IEnumerable<Book> Filter(string? title, string? sort)
+        // Updated: Now also filters by genre if provided
+        public IEnumerable<Book> Filter(string? title, string? sort, string? genre = null)
         {
             var result = _books.Where(b =>
-                string.IsNullOrEmpty(title) || b.Title.Contains(title, StringComparison.OrdinalIgnoreCase)).ToList();
+                (string.IsNullOrEmpty(title) || b.Title.Contains(title, StringComparison.OrdinalIgnoreCase)) &&
+                (string.IsNullOrEmpty(genre) || b.Genre.Equals(genre, StringComparison.OrdinalIgnoreCase))
+            ).ToList();
 
             return sort?.ToLower() switch
             {

@@ -9,6 +9,9 @@
         // Author of the book. Required and validated.
         public string Author { get; set; } = "";
 
+        // Genre of the book. Required and validated.
+        public string Genre { get; set; } = "";
+
         // Price of the book. Must be greater than zero.
         public decimal Price { get; set; }
 

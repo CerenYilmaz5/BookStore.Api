@@ -1,128 +1,121 @@
 # 📚 BookStore API
 
-A fully RESTful .NET 8 Web API project designed to manage books and authors. Built with a layered architecture and modern development best practices, this API supports user authentication (JWT), CRUD operations, DTO mapping, validation, and more.
+A clean, modular, and test-driven RESTful API built with **ASP.NET Core 8**, designed to manage books, authors, and genres. The project adheres to **SOLID principles**, leverages **JWT-based authentication**, and emphasizes **separation of concerns**, **input validation**, and **unit test coverage**.
 
 ---
 
-## 🚀 Features
+## 🚀 Core Features
 
-* **JWT Authentication** with fake login system
-* **Role-based Authorization** (Normal & Fake)
-* **CRUD operations** for:
-
-   * Books
-   * Authors
-* **AutoMapper** for entity-DTO transformation
-* **FluentValidation** for request validation
-* **Custom Middlewares** for:
-
-   * Logging incoming requests
-   * Global exception handling
-* **Swagger** integrated for API testing and documentation
+- 📘 **Book CRUD** with filtering, sorting, and genre support
+- 👤 **Author CRUD** with business rule: prevent deletion if books exist
+- 🏷️ **Genre CRUD** operations (with tests implemented)
+- 🔐 **JWT-based authentication** with role-based access
+- 🔄 **AutoMapper** for DTO ↔ Entity mapping
+- ✔️ **FluentValidation** for request model validation
+- ⚠️ **Global exception handling** and **request logging middlewares**
+- 🧪 Fully structured **unit tests** using xUnit and test helpers
+- 🧠 **In-memory fake services** (no external DB dependency)
 
 ---
 
-## 🧱 Technologies Used
+## ⚙️ Technologies Used
 
-* .NET 8 Web API
-* C#
-* AutoMapper
-* FluentValidation
-* Swagger (Swashbuckle)
-* JWT (System.IdentityModel.Tokens.Jwt)
+| Tool / Library            | Purpose                                      |
+|---------------------------|----------------------------------------------|
+| .NET 8 Web API            | Framework                                    |
+| AutoMapper                | DTO ↔ Entity mapping                         |
+| FluentValidation          | Model validation                             |
+| xUnit                     | Unit testing                                 |
+| JWT                       | Authentication/Authorization                 |
+| Swagger (Swashbuckle)     | API testing/documentation                    |
+| In-memory services        | Fake services for test/demo environments     |
 
 ---
 
 ## 📁 Folder Structure
 
 ```
-BookStore.Api
-├── Controllers          // API endpoints
-├── DTOs                 // Data transfer objects (inputs/outputs)
-├── Models               // Domain models/entities
-├── Extensions           // AutoMapper extensions
-├── Services             // Interfaces & in-memory service implementations
-├── Validators           // FluentValidation classes
-├── Middlewares          // Custom middleware (logging, error handling)
-├── Configurations       // JWT settings
-├── Program.cs
-└── Startup.cs           // Service/middleware registration
+BookStore.Api/
+│
+├── Controllers/            # API endpoints (Book, Author, Genre)
+├── DTOs/                   # Input and output models
+├── Models/                 # Core domain models
+├── Extensions/             # Mapping logic (AutoMapper extensions)
+├── Services/               # Service interfaces and fake implementations
+├── Validators/             # FluentValidation rule sets
+├── Middlewares/            # Logging and exception middlewares
+├── Configurations/         # JWT and other app configuration classes
+├── Program.cs / Startup.cs # Entry point and service registration
+
+BookStore.Tests/
+│
+├── Book/                   # Unit tests for Book services & validators
+├── Genre/                  # Unit tests for Genre services & validators
+├── Author/                 # Unit tests for Author services & rules
 ```
 
 ---
 
 ## 🔐 Authentication
 
-* `POST /api/authentication/login`
-
-   * Body: `{ "username": "fake", "password": "any" }`
-   * Roles:
-
-      * **Fake**: Allowed to perform POST (create) operations
-      * **Normal**: Read-only access
-
-Use the returned JWT in the `Authorization: Bearer <token>` header.
+- Use `POST /api/authentication/login` to get a JWT token.
+- Logging in as `"fake"` user returns the `"Fake"` role.
+- All other users default to `"Normal"` role.
+- Access rules:
+    - `"Fake"` users can access limited endpoints (e.g., create-only)
+    - `"Normal"` users can access full functionality
 
 ---
 
-## 📘 API Endpoints
+## ✅ Business Rules
 
-### 📚 Book
-
-* `GET /api/book`
-* `GET /api/book/{id}`
-* `POST /api/book` *(Fake only)*
-* `PUT /api/book/{id}`
-* `PATCH /api/book/{id}`
-* `DELETE /api/book/{id}`
-* `GET /api/book/list?title=...&sort=...`
-
-### ✒️ Author
-
-* `GET /api/author`
-* `GET /api/author/{id}`
-* `POST /api/author` *(Fake only)*
-* `PUT /api/author/{id}`
-* `DELETE /api/author/{id}` *(only if author has no books)*
+- Authors **cannot be deleted** if they have associated books.
+- Book `PublishedDate` must **not be in the future**.
+- All essential fields (`Title`, `Author`, `Genre`, etc.) are **required and validated**.
+- `Genre` field added to Book model and supported across all layers and filters.
 
 ---
 
-## 🧪 Testing & Development
+## 🧪 Unit Testing Guide
 
-To run the application locally:
+- All tests are written with **xUnit** and **FluentValidation.TestHelper**
+- Follows best practices: Arrange–Act–Assert pattern
+- Validator and service logic are tested separately
 
-### 1. Restore and build the project
+### ▶ Running all tests:
+
+```bash
+dotnet test BookStore.Tests
+```
+
+✅ All tests follow naming conventions:
+- `XCommandTests.cs` → core logic test
+- `XCommandValidatorTests.cs` → validation rule test
+
+---
+
+## 🔧 Project Setup
 
 ```bash
 dotnet restore
 dotnet build
+dotnet run --project BookStore.Api
 ```
 
-### 2. Run the API
-
-```bash
-dotnet run
-```
-
-### 3. Open Swagger for testing endpoints
+Then open:
 
 ```
-https://localhost:{port}/swagger
+https://localhost:5001/swagger
 ```
 
-### 4. Use sample login
-
-* Username: `fake`
-* Password: `any`
-* Copy the returned JWT and use it in `Authorize` button (top right of Swagger UI)
-
-You can now test all endpoints, including role-restricted routes.
+to explore and test the API via Swagger UI.
 
 ---
 
-## 👩‍💻 Developer Notes
+## 🗓️ Future Enhancements
 
-* Uses in-memory services (`FakeBookService`, `FakeAuthorService`)
-* No EF Core or database dependency
-* Designed for educational/demo purposes
-* Clean code, SOLID principles, modular structure
+- GenreController with full REST operations
+- Real data store integration (EF Core / Dapper)
+- Docker support for deployment
+- Centralized logging to file
+- CI/CD pipeline for tests (GitHub Actions)

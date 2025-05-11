@@ -4,7 +4,7 @@ using BookStore.Api.Services.Interfaces;
 using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Linq;
+
 
 namespace BookStore.Api.Controllers
 {
@@ -119,12 +119,13 @@ namespace BookStore.Api.Controllers
                 : NotFound(new { status = 404, message = "Book not found" });
         }
 
-        // GET: api/book/list?title=abc&sort=price
-        // Returns filtered/sorted books
+        // GET: api/book/list?title=abc&sort=price&genre=Sci-Fi
+        // Returns filtered and optionally sorted books, supporting genre filter
         [HttpGet("list")]
-        public IActionResult GetFiltered([FromQuery] string? title, [FromQuery] string? sort)
+        public IActionResult GetFiltered([FromQuery] string? title, [FromQuery] string? sort, [FromQuery] string? genre)
+
         {
-            var result = _service.Filter(title, sort).Select(b => b.ToResponse());
+            var result = _service.Filter(title, sort, genre).Select(b => b.ToResponse());
             return Ok(result);
         }
     }
